@@ -1,3 +1,4 @@
+from allauth.account import views as account_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -7,16 +8,21 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
+    # path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("src.users.urls", namespace="users")),
-    path("accounts/", include("allauth.urls")),
+    # path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("doc", include("src.site.urls", namespace="site")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+urlpatterns += [
+    path("accounts/login/", account_views.login, name="account_login"),
+    path("accounts/signup/", account_views.signup, name="account_signup"),
+    path("accounts/logout/", account_views.logout, name="account_logout"),
+]
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
