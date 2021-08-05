@@ -1,8 +1,12 @@
 #!make
-#include .envs/.local/django.env
-#include .envs/.local/postgres.env
-#export $(shell sed 's/=.*//' .envs/.local/django.env)
-#export $(shell sed 's/=.*//' .envs/.local/postgres.env)
+ENV_FILE_CHECK = .envs/.local/django.env
+ifneq ("$(wildcard $(ENV_FILE_CHECK))","")
+	include .envs/.local/django.env
+	include .envs/.local/postgres.env
+	export $(shell sed 's/=.*//' .envs/.local/django.env)
+	export $(shell sed 's/=.*//' .envs/.local/postgres.env)
+endif
+
 
 MANAGE = python manage.py
 SOURCE = src
@@ -15,6 +19,17 @@ WSGI_PORT=8000
 
 # ##########################################################################
 # common commands
+tests:
+	./manage.py test --parallel --noinput
+coverage:
+	coverage run --source='./src' ./manage.py test --parallel --noinput
+	coverage report
+report:
+	coverage report
+report+:
+	coverage html
+black:
+	black $(SOURCE) --exclude 'urls.py'
 celerybeat:
 	celery -A config.celery_app beat -l info
 celeryworker:
