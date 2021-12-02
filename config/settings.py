@@ -225,60 +225,26 @@ SECURE_BROWSER_XSS_FILTER = False
 X_FRAME_OPTIONS = "DENY"
 # endregion
 
-# region EMAIL
+# EMAIL-GMAIL
 # ------------------------------------------------------------------------------
-EMAIL_SERVICE = env("DJANGO_EMAIL_SERVICE")
-if EMAIL_SERVICE == 'gmail':
-    # EMAIL-GMAIL
-    # ------------------------------------------------------------------------------
-    # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-    EMAIL_BACKEND = env(
-        "DJANGO_EMAIL_BACKEND",
-        default="django.core.mail.backends.smtp.EmailBackend",
-    )
-    # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
-    EMAIL_HOST_USER = 'worker2plsdontban@gmail.com'
-    EMAIL_HOST_PASSWORD = 'wyindtacuytrilcm'
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+EMAIL_BACKEND = env(
+    "DJANGO_EMAIL_BACKEND",
+    default="django.core.mail.backends.smtp.EmailBackend",
+)
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
+EMAIL_HOST = env("GMAIL_HOST")
+EMAIL_PORT = env("GMAIL_PORT")
+EMAIL_HOST_USER = env("GMAIL_USER")
+EMAIL_HOST_PASSWORD = env("GMAIL_PASSWORD")
 
-    EMAIL_USE_TLS = True
-    ACCOUNT_ACTIVATION_DAYS = 1
-    REGISTRATION_AUTO_LOGIN = True
+EMAIL_USE_TLS = True
+ACCOUNT_ACTIVATION_DAYS = 1
+REGISTRATION_AUTO_LOGIN = True
 
-    EMAIL_TIMEOUT = 5
-    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-elif EMAIL_SERVICE == 'mailgun':
-    # EMAIL-MAILGUN
-    # ------------------------------------------------------------------------------
-    # https://docs.djangoproject.com/en/dev/ref/settings/#default-from-email
-    DEFAULT_FROM_EMAIL = env(
-        "DJANGO_DEFAULT_FROM_EMAIL", default="martin <mailgun@ssdg.roma.com>"
-    )
-    # https://docs.djangoproject.com/en/dev/ref/settings/#server-email
-    SERVER_EMAIL = env("DJANGO_SERVER_EMAIL", default=DEFAULT_FROM_EMAIL)
-    # https://docs.djangoproject.com/en/dev/ref/settings/#email-subject-prefix
-    EMAIL_SUBJECT_PREFIX = env(
-        "DJANGO_EMAIL_SUBJECT_PREFIX",
-        default="[mailchimp]",
-    )
-
-    # Anymail
-    # ------------------------------------------------------------------------------
-    # https://anymail.readthedocs.io/en/stable/installation/#installing-anymail
-    INSTALLED_APPS += ["anymail"]  # noqa F405
-    # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-    # https://anymail.readthedocs.io/en/stable/installation/#anymail-settings-reference
-    # https://anymail.readthedocs.io/en/stable/esps/mailgun/
-    EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-    ANYMAIL = {
-        "MAILGUN_API_KEY": env("MAILGUN_API_KEY"),
-        "MAILGUN_SENDER_DOMAIN": env("MAILGUN_DOMAIN"),
-        "MAILGUN_API_URL": env("MAILGUN_API_URL"),
-    }
-else:
-    raise Exception('Please enter valid DJANGO_EMAIL_SERVICE (gmail or mailgun)')
-# endregion
+EMAIL_TIMEOUT = 5
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# endregion GMAIL
 
 # region ADMIN
 # ------------------------------------------------------------------------------

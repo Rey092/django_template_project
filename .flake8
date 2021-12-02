@@ -4,5 +4,5 @@ exclude=.venv,venv,tests/*,src/*/migrations/*,.git,*migrations*, manage.py
 application-import-names=app
 import-order-style=google
 max-complexity=10
-ignore=
-inline-quotes='
+ignore=I100,I202,D106
+inline-quotes="

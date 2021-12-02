@@ -280,4 +280,6 @@ src/media/
 .production
 .envs
 !.envs/.local/
+local.env
+prod.env
 staticfiles
